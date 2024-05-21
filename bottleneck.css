@@ -13,23 +13,43 @@ body, html {
     font-family: 'Open Sans', sans-serif;
     
 }
-
+/* span{
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.15))
+} */
+#noise{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999999 !important;
+    opacity: 0.05;
+    pointer-events: none !important;
+    width: 100vw;
+    height: 100vh;
+    background: url("noise.gif");
+    background-repeat: repeat;
+}
 
 #menu{
     position: absolute;
     top: 0;
     left: 0;
     margin: 10px;
-    /* width: 250px; */
+    /* width: 270px; */
 }
 
 .menuOption{
-    margin-bottom: 10px;
+    
+    margin: 15px 0px 20px 15px;
+}
+.menuOption:hover .menuOptionInfo{
+    opacity: 1;
 }
 
 .menuOptionName{
     color: white;
     position: relative;
+    display: inline-block;
+    margin-bottom: 2.5px;
 }
 
 .menuOptionInfo{
@@ -45,7 +65,7 @@ a{
 
 .slider {
     -webkit-appearance: none;
-    width: 95%;
+    width: 90%;
     height: 15px;
     border-radius: 2px;  
     background: black;
@@ -157,6 +177,7 @@ p{
 .element{
     cursor: pointer;
     width: fit-content;
+    padding: 0px 3px;
 }
 
 .element:hover + .popup {
@@ -173,10 +194,10 @@ p{
     border-radius: 2px;
     background-color: black;
     color: white;
-    margin: 5px;
-    margin-top: 20px;
+    margin-left: 18px;
+    margin-bottom: 28px;
     cursor: pointer;
-    padding: 3px;
+    padding: 3px 5px;
 }
 
 #resetParam{
