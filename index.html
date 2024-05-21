@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bottleneck</title>
+    <script src="https://d3js.org/d3.v7.js"></script>
+    <script defer src="./bottleneck.js"></script>
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./bottleneck.css">
+</head>
+
+<body>
+    <div class="container" id="menu">
+        <div class="element" id="elementMenu">Menu</div>
+        <div class="popup" id="popupMenu">
+            <div class="menuOption">
+                <input type="range" id="mutationProb" class="slider" value="0" min="0" max="0.1" step="0.01">
+                <span class="menuOptionName">Mutation probability
+                    <span class="menuOptionInfoContainer">
+                        <span class="menuOptionInfo element">&#9432;</span>
+                        <div class="popup popupMenuInfo">
+                            <p>Determines the occurrence of new individuals with different genetic
+                                makeup than the initial population.</p>
+                        </div>
+                    </span>
+                </span>
+            </div>
+            <div class="menuOption">
+                <input type="range" id="bottleneckProb" class="slider" value="0.005" min="0" max="0.1" step="0.01">
+                <span class="menuOptionName">Bottleneck probability
+                    <span class="menuOptionInfoContainer">
+                        <span class="menuOptionInfo element">&#9432;</span>
+                        <div class="popup popupMenuInfo">
+                            <p>Indicates the frequency of events (e.g. famine, earthquakes,
+                                disease) that would cause a sharp decrease in the population size.</p>
+                        </div>
+                    </span>
+                </span>
+            </div>
+            <div class="menuOption">
+                <input type="range" id="spawnProb" class="slider" value="0.05" min="0" max="0.5" step="0.01">
+                <span class="menuOptionName">Reproduction probability
+                    <span class="menuOptionInfoContainer">
+                        <span class="menuOptionInfo element">&#9432;</span>
+                        <div class="popup popupMenuInfo">
+                            <p>Controls the growth of the population.</p>
+                        </div>
+                    </span>
+                </span>
+
+            </div>
+            <!-- <div id="menuOption">
+            <input type="range" id="bottleneckWidth" value="100" min="0" max="1000">
+            <span class="menuOptionName">Bottleneck width</span>
+        </div> -->
+            <button id="resetParam" class="reset hide">Reset parameters</button>
+            <button id="resetSim" class="reset">Restart simulation</button>
+        </div>
+    </div>
+    <div class="container" id="container1">
+        <div class="element" id="element">About</div>
+        <div class="popup" id="popupInfo">
+            <p>This is a visualization of the genetic bottleneck effect on an imaginary population. Every row is a
+                population generation which can be added with a click.</p>
+        </div>
+    </div>
+    <div class="container" id="container2">
+        <div class="element" id="element">Publication</div>
+        <div class="popup" id="popupCover">
+            <img width="300px" src="cover.png" alt="Nature cover">
+            <p id="popupCoverParaDesktop">This program is an interactive version of the Nature cover created in
+                collaboration between Aalto
+                University and FinnGen. Click to go to the publication.</p>
+            <p id="popupCoverParaMobile">This program is an interactive version of the Nature cover created in
+                collaboration between Aalto
+                University and FinnGen. Click <a href="https://www.nature.com/nature/volumes/613/issues/7944"
+                    target="_blank">here</a> to go to the publication.</p>
+        </div>
+    </div>
+
+    <svg id="bottleneck"></svg>
+
+
+</body>
+
+</html>
