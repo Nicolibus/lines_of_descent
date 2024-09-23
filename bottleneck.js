@@ -1,3 +1,10 @@
+let introMode = true;
+let introSection = 0;
+let isMobile = window.innerWidth < 600
+const introSections = [intro_01_population, intro_02_newGeneration,intro_03_bottleneck]
+const intro = d3.select("body")
+    .append("svg")
+    .attr("id","intro")
 // sort the colors? so that the random colors are not too different from the previous ones
 // more colors? slightly different hues from the ones now?
 let colors = [[212, 169, 73], [216, 165, 189], [189, 65, 16], [42, 43, 51], [55, 167, 111], [10, 101, 173], [109, 67, 136], [214, 214, 217], [41, 185, 176]];
@@ -62,7 +69,15 @@ let cells = data.cells;
 const simulation = d3.forceSimulation(nodes)
     .force("charge", d3.forceManyBody().strength(-30))
     .force("link", d3.forceLink(links).strength(1).distance(d => d.distance).iterations(10))
-    .on("tick", ticked);
+    .alphaDecay(0.035)
+    .on("tick", ticked)
+    .on("end",function(){
+        if(introMode && introSection < 3){
+            console.log(introSection)
+            introSections[introSection]()
+        }
+        
+    });
 
 // const drag = d3.drag()
 //     .on("start", dragstarted)
@@ -108,6 +123,7 @@ let cellsSvg = mainGroup
     .attr("class", "cell");
 
 function ticked() {
+
     mutationProb = d3.select("#mutationProb").property("value");
     bottleneckProb = d3.select("#bottleneckProb").property("value");
     spawnProb = d3.select("#spawnProb").property("value");
@@ -181,7 +197,25 @@ function getColorFromTree(colorTree, node) {
     return colorBranch[index];
 }
 
+function fitInScreen(){
+    const populations = d3.select("#bottleneck").select("g").node().getBoundingClientRect()
+    svg.transition().call(zoom.scaleBy, 0.8)
+    
+    setTimeout(() => {
+        if(introMode && introSection < 3 && (populations.x < 0 || populations.y < 0 || populations.x+populations.width > window.innerWidth || populations.y+populations.height > window.innerHeight)){
+            svg.transition().call(fitInScreen())
+        }
+    }, 400);
+    
+}
+
 function addRow() {
+    d3.select("#intro").selectAll("*").transition().attr("opacity",0).remove()
+    const populations = d3.select("#bottleneck").select("g").node().getBoundingClientRect()
+    console.log(populations)
+        if(introMode && introSection < 3 && (populations.x < 0 || populations.y < 0 || populations.x+populations.width > window.innerWidth || populations.y+populations.height > window.innerHeight)){
+            fitInScreen()
+        }
     // create new nodes
     let newNodes = [];
     let newSpawn = 0;
@@ -401,6 +435,12 @@ d3.select("#resetParam").on("click", function () {
 });
 
 d3.select("#resetSim").on("click", function () {
+    this.innerHTML = "Restart Simulation"
+    d3.select("#bottleneck").style("pointer-events","all")
+    introMode = false
+    d3.select("#intro")
+        .style("opacity",0)
+        .style("pointer-events","none")
     // get new data
     rowWidth = 20;
     spawn = 0;
@@ -411,7 +451,7 @@ d3.select("#resetSim").on("click", function () {
     nodes = data.nodes.map(d => Object.create(d));
     cells = data.cells;
 
-    d3.select('svg')
+    d3.select('#bottleneck')
         .call(zoom.scaleTo, 1)
 	    .call(zoom.translateTo, 0.5 * width, 0.5 * height);
 
@@ -458,3 +498,213 @@ d3.selectAll(".slider")
         d3.select(this).classed("grabbing", false)
         d3.select("#resetParam").classed("hide", false)
     })
+
+    
+        
+    d3.select("#bottleneck").style("pointer-events","none")  
+    function intro_01_population(){
+        
+        introSection++
+        console.log("1")
+        const generation = d3.select("#bottleneck")
+        .select(".cell").node().parentElement.getBoundingClientRect()
+        
+        const intro = d3.select("#intro")
+            
+        const individual = d3.select("#bottleneck")
+        .selectAll(".cell").nodes()[5].getBoundingClientRect()
+        
+        
+        intro
+        .append("line")
+            .attr("fill","white")
+            .attr("x1",individual.x+(individual.width/2))
+            .attr("y1",individual.y)
+            
+            .attr("x2",individual.x+(individual.width/2))
+            .attr("y2",individual.y)
+            .transition()
+            .attr("x1",individual.x+(individual.width/2)+25)
+            .attr("y1",generation.y-30)
+            .attr("stroke","white")
+            
+        intro
+        .append("text")
+            .text("every cell is an individual")
+            .attr("fill","white")
+            .attr("text-anchor","middle")
+            .attr("x",individual.x+(individual.width/2)+25)
+            .attr("y",generation.y-35)
+            .attr("opacity",0)
+            .transition()
+            .duration(300)
+            .attr("opacity",1)
+
+        setTimeout(() => {
+            intro
+            .append("text")
+                .text("and this is a population")
+                .attr("fill","white")
+                .attr("x",generation.x)
+                .attr("y",generation.y+generation.height+20)
+                .attr("opacity",0)
+                .transition()
+                .duration(300)
+                .attr("opacity",1)
+            intro
+            .append("text")
+                .text(`if you ${isMobile?"tap":"click"} a new generation wil be born...`)
+                .attr("fill","white")
+                .attr("x",generation.x)
+                .attr("y",generation.y+generation.height+40)
+                .attr("opacity",0)
+                .transition()
+                .delay(2000)
+                .attr("opacity",1)
+                d3.select("#bottleneck").style("pointer-events","all")
+        }, 1500);
+    }
+
+    function intro_02_newGeneration(){
+        d3.select("#bottleneck").style("pointer-events","none")
+        introSection++
+        const generation = d3.select("#bottleneck")
+        .select(".cell").node().parentElement.getBoundingClientRect()
+        
+        const intro = d3.select("#intro")
+            
+        const individual = d3.select("#bottleneck")
+        .selectAll(".cell").nodes()[5].getBoundingClientRect()
+        intro
+        .append("text")
+            .text("Here's a new generation")
+            .attr("fill","white")
+            .attr("x",generation.x)
+            .attr("y",generation.y+generation.height+20)
+            .attr("opacity",0)
+            .transition()
+            .duration(300)
+            .attr("opacity",1)
+        intro
+        .append("text")
+            .text("Individuals are colored based on their genes")
+            .attr("fill","white")
+            .attr("x",generation.x)
+            .attr("y",generation.y+generation.height+40)
+            .attr("opacity",0)
+            .transition()
+            .delay(1000)
+            .duration(300)
+            .attr("opacity",1)
+        intro
+        .append("text")
+            .text("and therefore colors are likely to be inherited")
+            .attr("fill","white")
+            .attr("x",generation.x)
+            .attr("y",generation.y+generation.height+60)
+            .attr("opacity",0)
+            .transition()
+            .delay(2000)
+            .duration(300)
+            .attr("opacity",1)
+        intro
+        .append("text")
+            .text("tap again for new generations")
+            .attr("fill","white")
+            .attr("x",generation.x)
+            .attr("y",generation.y+generation.height+80)
+            .attr("opacity",0)
+            .transition()
+            .delay(3500)
+            .duration(300)
+            .attr("opacity",1)
+
+        setTimeout(() => {
+            d3.select("#bottleneck").style("pointer-events","all")
+        }, 3500);
+    }
+function intro_03_bottleneck(){
+
+    const generations = d3.select("#bottleneck")
+    .select(".cell").node().parentElement.getBoundingClientRect()
+    
+    const intro = d3.select("#intro")
+    
+
+    const bottleneck = d3.select("#bottleneck")
+        .selectAll("polygon")
+        .nodes()
+        .find((node) =>node.getAttribute("fill") === "rgba(0,0,0,0)")
+        ?.getBoundingClientRect()
+        console.log(bottleneck)
+    if(bottleneck){
+        intro
+        .append("line")
+            .attr("fill","white")
+            .attr("x1",bottleneck.left+(bottleneck.width/2))
+            .attr("y1",bottleneck.top+(bottleneck.height/2))
+            
+            .attr("x2",bottleneck.left+(bottleneck.width/2))
+            .attr("y2",bottleneck.top+(bottleneck.height/2))
+            .transition()
+            .attr("y1", 113)
+            .attr("x1",window.innerWidth / 2)
+            .attr("stroke","white")
+
+        intro
+            .append("text")
+                .text("The population split")
+                .attr("fill","white")
+                .attr("y", 50)
+                .attr("x",window.innerWidth / 3)
+                .attr("opacity",0)
+                .transition()
+                .delay(300)
+                .duration(300)
+                .attr("opacity",1)
+        intro
+            .append("text")
+                .text("the future generations will only inherit colors")
+                .attr("fill","white")
+                .attr("y", 70)
+                .attr("x",window.innerWidth / 3)
+                .attr("opacity",0)
+                .transition()
+                .delay(300)
+                .duration(300)
+                .attr("opacity",1)
+        intro
+            .append("text")
+                .text("from the ancestors within their group")
+                .attr("fill","white")
+                .attr("y", 90)
+                .attr("x",window.innerWidth / 3)
+                .attr("opacity",0)
+                .transition()
+                .delay(300)
+                .duration(300)
+                .attr("opacity",1)
+        intro
+            .append("text")
+                .text("This is called a Genetic Bottleneck")
+                .attr("fill","white")
+                .classed("bottleneck-label",true)
+                .attr("y", 110)
+                .attr("x",window.innerWidth / 3)
+                .attr("opacity",0)
+                .transition()
+                .delay(300)
+                .duration(300)
+                .attr("opacity",1)
+
+            setTimeout(() => {
+                d3.select("#bottleneck").style("pointer-events","all")
+            }, 600);
+
+            introSection++
+    }
+    
+            
+        
+}
+
