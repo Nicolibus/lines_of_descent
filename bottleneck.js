@@ -361,13 +361,17 @@ svg.on("click", addRow);
 // }
 
 //ZOOM and PAN
-let group = svg.call(d3.zoom().on("zoom", zoomed)).on("dblclick.zoom", null).select("g");
+const zoom = d3.zoom().on("zoom", zoomed);
+let group = svg.call(zoom).on("dblclick.zoom", null).select("g");
+
+
 function zoomed(e) {
     const { x, y, k } = e.transform;
     group.attr(
         "transform",
         "translate(" + x + "," + y + ")" + " scale(" + k + ")"
     );
+  
 }
 document.addEventListener('DOMContentLoaded', function () {
     var lastTouchEnd = 0;
@@ -407,7 +411,9 @@ d3.select("#resetSim").on("click", function () {
     nodes = data.nodes.map(d => Object.create(d));
     cells = data.cells;
 
-
+    d3.select('svg')
+        .call(zoom.scaleTo, 1)
+	    .call(zoom.translateTo, 0.5 * width, 0.5 * height);
 
     // update svg
     mainGroup.selectAll("*").remove();
