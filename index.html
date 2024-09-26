@@ -14,12 +14,13 @@
 <body>
     <div class="container" id="menu">
         <div id="noise"></div>
-        <div class="element" id="elementMenu">Menu</div>
+        <div class="element" id="elementMenu">Edit Simulation</div>
         <div class="popup" id="popupMenu">
             <div class="menuOption">
                 <span class="menuOptionName">Mutation probability
                     <span class="menuOptionInfoContainer">
                         <span class="menuOptionInfo element">&#9432;</span>
+                        <span class="closePopup">+</span>
                         <div class="popup popupMenuInfo">
                         <p>Determines the occurrence of new individuals with different genetic
                             makeup than the initial population.</p>
@@ -32,6 +33,7 @@
                 <span class="menuOptionName">Bottleneck probability
                     <span class="menuOptionInfoContainer">
                         <span class="menuOptionInfo element">&#9432;</span>
+                        <span class="closePopup">+</span>
                         <div class="popup popupMenuInfo">
                             <p>Indicates the frequency of events (e.g. famine, earthquakes,
                                 disease) that would cause a sharp decrease in the population size.</p>
@@ -44,6 +46,7 @@
                 <span class="menuOptionName">Reproduction probability
                     <span class="menuOptionInfoContainer">
                         <span class="menuOptionInfo element">&#9432;</span>
+                        <span class="closePopup">+</span>
                         <div class="popup popupMenuInfo">
                             <p>Controls the growth of the population.</p>
                         </div>
@@ -56,14 +59,27 @@
             <span class="menuOptionName">Bottleneck width</span>
         </div> -->
             <button id="resetParam" class="reset hide">Reset parameters</button>
+            <button id="paramOk" class="reset">Ok</button>
         </div>
     </div>
     <div class="container" id="container1">
         
         <div class="element" id="element">About</div>
         <div class="popup" id="popupInfo">
-            <p>This is a visualization of the genetic bottleneck effect on an imaginary population. Every row is a
+            <h2>Lines of Descent <br>__</h2>
+            
+            <p>This is a symulation of the genetic bottleneck effect on an imaginary population. Every row is a
                 population generation which can be added with a click.</p>
+                <br>
+            <p>Every cell is an individual and the color (given randomly) represents a specific genetic mutation.
+                The color will be likely passed down to future genrations. 
+            </p>
+                <br>
+            <p>When a genetic <b>Bottleneck</b> happens, the population splits, 
+            fewer variations are left and the colors of the new branch tend to homogenise.
+            </p>
+            <br>
+            <button id="startTutorial" class="reset">See Introduction</button>
         </div>
     </div>
     <div class="container" id="container2">
@@ -80,7 +96,14 @@
         </div>
     </div>
     <button id="resetSim" class="reset">End Tutorial</button>
-    <svg id="bottleneck"></svg>
+    <svg id="bottleneck">
+        <defs>
+            <filter id="shadow">
+              <feDropShadow dx="0" dy="0" stdDeviation="1" flood-opacity="0.7"/>
+            </filter>
+          </defs>
+
+    </svg>
 
 
 </body>
