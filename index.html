@@ -7,13 +7,18 @@
     <title>Lines of Descent</title>
     <script src="https://d3js.org/d3.v7.js"></script>
     <script defer src="./bottleneck.js"></script>
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./bottleneck.css">
 </head>
 
 <body>
+    <div id="header">
+        <h1>Lines of Descent</h1>
+        <h2>Genetic Diversity in Isolated Populations</h2>
+        
+    </div>
+    <div id="noise"></div>
     <div class="container" id="menu">
-        <div id="noise"></div>
         <div class="element" id="elementMenu">Edit Simulation</div>
         <div class="popup" id="popupMenu">
             <div class="menuOption">
@@ -66,9 +71,10 @@
         
         <div class="element" id="element">About</div>
         <div class="popup" id="popupInfo">
+            <span class="closePopup">+</span>
             <h2>Lines of Descent <br>__</h2>
             
-            <p>This is a symulation of the genetic bottleneck effect on an imaginary population. Every row is a
+            <p>This is a simulation of the genetic bottleneck effect on an imaginary population. Every row is a
                 population generation which can be added with a click.</p>
                 <br>
             <p>Every cell is an individual and the color (given randomly) represents a specific genetic mutation.
@@ -82,14 +88,25 @@
             <button id="startTutorial" class="reset">See Introduction</button>
         </div>
     </div>
+    <div class="container" id="container3">
+        <div class="element" id="credits">Credits</div>
+        <div class="popup" id="creditInfo">
+            <div class="closeThis"><span>+</span></div>
+            <b>Authors: </b>
+            <p>Margo Nowicka, Federico Simeoni, Nicola Cerioli, Rupesh Vyas </p>
+            <b>Thanks to: </b>
+            <p>Mary Pat Reeve, Mark Daly, Mari Anneli Kaunnisto, Mervi Aavikko </p>
+        </div>
+    </div>
     <div class="container" id="container2">
         <div class="element" id="element">Publication</div>
         <div class="popup" id="popupCover">
-            <img width="300px" src="cover.png" alt="Nature cover">
-            <p id="popupCoverParaDesktop">This program is an interactive version of the Nature cover created in
+            <div class="closeThis"><span>+</span></div>
+            <img width="300px" src="./images/cover.png" alt="Nature cover">
+            <p id="popupCoverParaDesktop">This simulation is an interactive version of the Nature cover created in
                 collaboration between Aalto
                 University and FinnGen. Click to go to the publication.</p>
-            <p id="popupCoverParaMobile">This program is an interactive version of the Nature cover created in
+            <p id="popupCoverParaMobile">This simulation is an interactive version of the Nature cover created in
                 collaboration between Aalto
                 University and FinnGen. Click <a href="https://www.nature.com/nature/volumes/613/issues/7944"
                     target="_blank">here</a> to go to the publication.</p>
@@ -104,8 +121,28 @@
           </defs>
 
     </svg>
+    <!-- <div id="what-is-bottleneck">
 
-
+    </div> -->
+    <!-- POINTER EVENTS REMOVED FOR EXHIBIT-->
+    <div id="logos" style="pointer-events: none;">
+        <a href="https://www.finngen.fi/en" target="_blank">
+            <img  src="./images/finngen_logo_white.png" alt="FinnGen">
+        </a>
+        
+        <a href="https://infodesign.aalto.fi/" target="_blank">
+            <img  src="./images/aalto_logo_white.png" alt="Aalto">
+        </a>
+    </div>
+    <div id="triggerRestart">
+        <div id="message">
+            <h1></h1>
+        </div>
+        <div id="buttons">
+            <button id="continue" ><nobr>Continue</nobr></button>
+            <button id="restart"><nobr>Restart Simulation</nobr></button>
+        </div>
+    </div>
 </body>
 
 </html>

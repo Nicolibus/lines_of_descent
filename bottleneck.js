@@ -1,6 +1,9 @@
 let introMode = true;
 let introSection = 0;
 let refitting = false;
+let goOn = false;
+let newSession = false;
+
 
 let isMobile = window.innerWidth < 600
 const introSections = [intro_01_population, intro_02_newGeneration,intro_03_bottleneck]
@@ -96,7 +99,7 @@ const svg = d3.select("#bottleneck")
     // .attr("width", width)
     // .attr("height", height)
     // .attr("viewBox", [0, 0, width, height])
-    .style("background-color", "black");
+    // .style("background-color", "black");
 
 const mainGroup = svg.append("g");
 
@@ -234,14 +237,25 @@ function checkBottleneck(){
         ?.getBoundingClientRect()
     return bottleneck;
 }
+
 function addRow() {
+    
+    
+
+    
+    if(!goOn && d3.selectAll(".cell").nodes().length >= 5500){
+        d3.select("#triggerRestart").style("display","flex")
+        .select("#message")
+        .select("h1").html("It's getting crowded here!")
+    }
+    
     if(introMode && checkBottleneck() && introSection <= 2){
         console.log("LOCK")
         d3.select("#bottleneck").style("pointer-events","none")
     }
     d3.select("#intro").selectAll("*").transition().attr("opacity",0).remove()
     const populations = d3.select("#bottleneck").select("g").node().getBoundingClientRect()
-    console.log(introSection)
+    
     if(introSection < 2 && introMode){
         d3.select("#bottleneck").style("pointer-events","none")
     }
@@ -441,7 +455,7 @@ function zoomed(e) {
         "transform",
         "translate(" + x + "," + y + ")" + " scale(" + k + ")"
     );
-  
+  console.log(k)
 }
 document.addEventListener('DOMContentLoaded', function () {
     var lastTouchEnd = 0;
@@ -472,6 +486,9 @@ d3.select("#resetParam").on("click", function () {
 
 d3.select("#resetSim").on("click", function () {
     this.innerHTML = "Restart Simulation"
+    resetSim()
+});
+function resetSim(){
     d3.select("#bottleneck").style("pointer-events","all")
     introMode = false
     d3.select("#intro")
@@ -509,8 +526,7 @@ d3.select("#resetSim").on("click", function () {
     simulation.nodes(nodes);
     simulation.force("link").links(links);
     simulation.alpha(1).restart();
-});
-
+}
 d3.select("#container2").on("click", function (e) {
     if (width < MOBILE_WIDTH) {
     }
@@ -701,7 +717,7 @@ function intro_03_bottleneck(){
         const bottleneck = d3.select("#bottleneck")
             .selectAll("polygon")
             .nodes()
-            .find((node,n,l) =>node.getAttribute("fill") === "rgba(0,0,0,0)" && +node.getAttribute("data-position") !== 0 && +node.getAttribute("data-position") !== +node.getAttribute("data-rowMax") && (l[n-1]? (console.log(l[n-1]),l[n-1].getAttribute("data-isBottleneck") !== "true") : false)  )
+            .find((node,n,l) =>node.getAttribute("fill") === "rgba(0,0,0,0)" && +node.getAttribute("data-position") !== 0 && +node.getAttribute("data-position") !== +node.getAttribute("data-rowMax") && (l[n-1]? (l[n-1].getAttribute("data-isBottleneck") !== "true") : false) && (l[n+1]? (l[n+1].getAttribute("data-isBottleneck") !== "true") : false)  )
             //.find(node => console.log(node.getAttribute("data-position") , +node.getAttribute("data-rowMax"))  )
             ?.getBoundingClientRect()
 
@@ -716,17 +732,41 @@ function intro_03_bottleneck(){
             .attr("x2",bottleneck.left+(bottleneck.width/2))
             .attr("y2",bottleneck.top+(bottleneck.height/2))
             .transition()
-            .attr("y1", 138)
+            .attr("y1", 188)
             .attr("x1",window.innerWidth / 2)
             .attr("stroke","white")
 
         intro
             .append("text")
                 .attr("filter","url(#shadow)")
-                .text("The population split!")
+                .text("Uh! The population split!")
                 .attr("fill","white")
                 .attr("y", 60)
-                .attr("x",isMobile?window.innerWidth / 6:window.innerWidth / 3)
+                .attr("x",isMobile?window.innerWidth / 8:window.innerWidth / 3)
+                .attr("opacity",0)
+                .transition()
+                .delay(300)
+                .duration(300)
+                .attr("opacity",1)
+        intro
+            .append("text")
+                .text("Phenomena such as migrations or natural disasters")
+                .attr("filter","url(#shadow)")
+                .attr("fill","white")
+                .attr("y", 85)
+                .attr("x",isMobile?window.innerWidth / 8:window.innerWidth / 3)
+                .attr("opacity",0)
+                .transition()
+                .delay(300)
+                .duration(300)
+                .attr("opacity",1)
+        intro
+            .append("text")
+                .text("may divide a population into different branches.")
+                .attr("filter","url(#shadow)")
+                .attr("fill","white")
+                .attr("y", 110)
+                .attr("x",isMobile?window.innerWidth / 8:window.innerWidth / 3)
                 .attr("opacity",0)
                 .transition()
                 .delay(300)
@@ -737,8 +777,8 @@ function intro_03_bottleneck(){
                 .text("Future generations will only inherit colors")
                 .attr("filter","url(#shadow)")
                 .attr("fill","white")
-                .attr("y", 85)
-                .attr("x",isMobile?window.innerWidth / 6:window.innerWidth / 3)
+                .attr("y", 135)
+                .attr("x",isMobile?window.innerWidth / 8:window.innerWidth / 3)
                 .attr("opacity",0)
                 .transition()
                 .delay(300)
@@ -749,8 +789,8 @@ function intro_03_bottleneck(){
                 .text("from the ancestors within their group.")
                 .attr("filter","url(#shadow)")
                 .attr("fill","white")
-                .attr("y", 110)
-                .attr("x",isMobile?window.innerWidth / 6:window.innerWidth / 3)
+                .attr("y", 160)
+                .attr("x",isMobile?window.innerWidth / 8:window.innerWidth / 3)
                 .attr("opacity",0)
                 .transition()
                 .delay(300)
@@ -762,8 +802,8 @@ function intro_03_bottleneck(){
                 .attr("filter","url(#shadow)")
                 .attr("fill","white")
                 .classed("bottleneck-label",true)
-                .attr("y", 135)
-                .attr("x",isMobile?window.innerWidth / 6:window.innerWidth / 3)
+                .attr("y", 185)
+                .attr("x",isMobile?window.innerWidth / 8:window.innerWidth / 3)
                 .attr("opacity",0)
                 .transition()
                 .delay(300)
@@ -832,6 +872,10 @@ function intro_03_bottleneck(){
 d3.select("body")
     .on("click",()=>{
         d3.selectAll(".popupMenuInfo").style("display","none")
+        d3.selectAll(".menuOptionInfo")
+        .style("opacity","1")
+        .style("pointer-events","all")
+        d3.selectAll(".closePopup").style("display","none")
         d3.selectAll(".popup").style("display","none")
         if(!isMobile)d3.select("#popupMenu").style("display","block")
     })
@@ -851,9 +895,14 @@ if(isMobile){
 
 d3.selectAll(".menuOptionInfoContainer").on("click",function(e){
     e.stopPropagation()
+    
     d3.selectAll(".popupMenuInfo").style("display","none")
     d3.select(this).select(".popupMenuInfo").style("display","block")
+    d3.selectAll(".closePopup").style("display","none")
     d3.select(this).select(".closePopup").style("display","inline-block")
+    d3.selectAll(".menuOptionInfo")
+        .style("opacity","1")
+        .style("pointer-events","all")
     d3.select(this).select(".menuOptionInfo")
         .style("opacity","0")
         .style("pointer-events","none")
@@ -880,3 +929,32 @@ d3.selectAll(".closePopup").on("click",function(e){
         d3.select(this).select(".popupMenuInfo").style("display","none")
     })
 }
+d3.selectAll(".closeThis").on("click",function(){
+    d3.select(this.parentElement).style("display","none")
+    
+})
+
+d3.select("#continue").on("click", function(){
+    d3.select("#triggerRestart").style("display","none")
+    goOn = true
+    newSession = false
+})
+d3.select("#restart").on("click" , function(){
+    d3.select("#triggerRestart").style("display","none")
+    resetSim()
+    if(newSession)window.location.reload()
+})
+
+var idleTime;
+function idle(){
+    if(introSection > 1){    
+        d3.select("#triggerRestart").style("display","flex")
+        .select("#message")
+        .select("h1").html("Time for a new exploration?")
+        newSession = true
+    }
+}
+document.addEventListener('mousemove', function() { 
+    if (idleTime) clearTimeout(idleTime); 
+    idleTime = setTimeout(idle, 300000);     
+});
