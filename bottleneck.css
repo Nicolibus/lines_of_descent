@@ -533,6 +533,18 @@ svg{
     90%{fill:rgb(243, 248, 247)}
     100%{fill:rgb(243, 248, 247)}
 }
+@keyframes ctaAnimation {
+    0%{fill:rgb(243, 248, 247)}
+    10%{fill:rgb(243, 248, 247)}
+    
+    45%{fill:rgb(180, 180, 180)}
+    48%{fill:rgb(170, 170, 170);}
+    50%{fill:rgb(170, 170, 170);}
+    53%{fill:rgb(180, 180, 180)}
+    
+    90%{fill:rgb(243, 248, 247)}
+    100%{fill:rgb(243, 248, 247)}
+}
 
 .closeThis{
     padding: 2.5px;
