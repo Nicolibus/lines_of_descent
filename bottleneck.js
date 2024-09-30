@@ -901,8 +901,18 @@ d3.selectAll(".menuOptionInfoContainer").on("click",function(e){
     
     d3.selectAll(".popupMenuInfo").style("display","none")
     d3.select(this).select(".popupMenuInfo").style("display","block")
-    d3.selectAll(".closePopup").style("display","none")
-    d3.select(this).select(".closePopup").style("display","inline-block")
+    d3.selectAll(".closePopup")
+        .style("display","none")
+    d3.selectAll(".menuOption")
+        .style("z-index","-1")
+        
+        
+    d3.select(this).select(".closePopup")
+        .style("display","inline-block")
+    d3.select(this.parentElement.parentElement.parentElement).select(".menuOption")
+        .style("z-index","999999")
+        
+        
     d3.selectAll(".menuOptionInfo")
         .style("opacity","1")
         .style("pointer-events","all")
