@@ -341,6 +341,9 @@ svg{
     top: 0;
     
 }
+svg g{
+    cursor: pointer;
+}
 
 #popupCoverParaDesktop{
     display: block;
@@ -372,7 +375,7 @@ svg{
 }
 #paramOk{
     display: none;
-    z-index: -3;
+    z-index: 3;
 }
 #logos{
    display: flex; 
@@ -489,7 +492,7 @@ svg{
         bottom: 13.25px;
         stroke: 1px solid white;
         cursor: pointer;
-        z-index: -3;
+        z-index: 3;
     }
     #logos{
         display: none;
